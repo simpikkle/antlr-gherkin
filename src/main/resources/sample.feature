@@ -2,5 +2,5 @@ Feature: featureName
   Description
 
   Scenario: scenarioName
-    When a
-    Then b
+    When some predicate
+    Then some action
