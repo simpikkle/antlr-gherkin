@@ -1,5 +1,8 @@
+import org.antlr.v4.runtime.RuleContext;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FeatureListener extends GherkinBaseListener {
 
@@ -41,16 +44,22 @@ public class FeatureListener extends GherkinBaseListener {
     }
 
     @Override
-    public void enterFirstWhen(GherkinParser.FirstWhenContext ctx) {
+    public void enterWhen(GherkinParser.WhenContext ctx) {
         Step step = new Step();
-        step.setName(ctx.ruleBody().getText());
+        GherkinParser.StepTextContext stepContext = ctx.firstWhen().stepText();
+        step.setName(stepContext.getText());
+        step.setParameters(stepContext.parameter()
+                .stream()
+                .map(GherkinParser.ParameterContext::word)
+                .map(RuleContext::getText)
+                .collect(Collectors.toList()));
         currentScenario.getSteps().add(step);
     }
 
     @Override
-    public void enterFirstThen(GherkinParser.FirstThenContext ctx) {
+    public void enterThen(GherkinParser.ThenContext ctx) {
         Step step = new Step();
-        step.setName(ctx.ruleBody().getText());
+        step.setName(ctx.stepText().getText());
         currentScenario.getSteps().add(step);
     }
 

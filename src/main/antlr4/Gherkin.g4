@@ -5,38 +5,36 @@ feature: featureHeader featureBody;
 featureHeader: (Space | NewLine)* Tag* Feature content NewLine+ featureDescription*;
 featureDescription: ~(Background | Scenario | ScenarioOutline) content NewLine+ ;
 
-featureBody: background? (scenario | outlineScenario)+;
+featureBody: background? scenario+;
 
-background: (Space | NewLine)* Tag* Background content NewLine+ blockDesc* given;
-blockDesc: ~(Given) content NewLine+ ;
+background: (Space | NewLine)* Tag* Background content NewLine+ blockDescription* given;
+blockDescription: ~(Given | When | Then) content NewLine+ ;
 blockBody: given? when? then;
 
-scenario: (Space | NewLine)* Tag* Scenario content NewLine+  blockDesc* blockBody;
-outlineScenario: (Space | NewLine)* Tag* ScenarioOutline content NewLine+ blockDesc* blockBody;
+scenario: (Space | NewLine)* Tag* Scenario content NewLine+ blockDescription* blockBody;
 
-given: firstGiven moreGiven*;
-firstGiven: (Space | NewLine)* Given ruleBody;
-moreGiven: (Space | NewLine)* (And | But | Given) ruleBody;
+given: (Space | NewLine)* Given stepText;
 
 when: firstWhen moreWhen*;
-firstWhen: (Space | NewLine)* When ruleBody;
-moreWhen: (Space | NewLine)* (And | But | When) ruleBody;
+firstWhen: (Space | NewLine)* When stepText;
+moreWhen: (Space | NewLine)* (Or | And | When) stepText;
 
-then: firstThen moreThen*;
-firstThen: (Space | NewLine)* Then ruleBody;
-moreThen: (Space | NewLine)* (And | But | Then) ruleBody;
+then: (Space | NewLine)* Then stepText;
 
-ruleBody: ruleText (NewLine | EOF);
-ruleText: content;
+stepText: content* (content | parameter)* (NewLine | EOF);
 
-content: Space* Word (Word|Space)*;
+parameter: Space* '"' word '"' (Space | NewLine)+;
+
+content: Space* word+;
+
+word: Char (Char|Space)*;
 
 // Tokens
-Tag:  '@' WD (Space | NewLine)+;
+Tag:  '@' WORD_CHAR (Space | NewLine)+;
 Comment: Space* '#' .*? NewLine -> skip;
 
 And: 'And ';
-But: 'But ';
+Or: 'Or ';
 Given: 'Given ';
 When: 'When ';
 Then: 'Then ';
@@ -47,6 +45,6 @@ Feature: 'Feature: ';
 
 Space : [ \t];
 NewLine : '\r'? '\n' | '\r';
-Word: WD;
+Char: WORD_CHAR;
 
-fragment WD: ~[ \t\r\n]+?;
+fragment WORD_CHAR: ~[ \t\r\n"]+?;

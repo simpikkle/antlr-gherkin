@@ -1,6 +1,9 @@
 Feature: featureName
   Description
 
+  Background: backgroundName
+    When some background check
+
   Scenario: scenarioName
-    When some predicate
+    When some "field" has "value"
     Then some action
