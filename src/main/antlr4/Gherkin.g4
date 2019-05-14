@@ -7,23 +7,24 @@ featureDescription: ~(Background | Scenario | ScenarioOutline) content NewLine+ 
 
 featureBody: background? scenario+;
 
-background: (Space | NewLine)* Tag* Background content NewLine+ blockDescription* given;
+background: (Space | NewLine)* Tag* Background content NewLine+ blockDescription* blockBody NewLine+;
+
 blockDescription: ~(Given | When | Then) content NewLine+ ;
-blockBody: given? when? then;
+blockBody: given* when* or* then*;
 
 scenario: (Space | NewLine)* Tag* Scenario content NewLine+ blockDescription* blockBody;
 
 given: (Space | NewLine)* Given stepText;
 
-when: firstWhen moreWhen*;
-firstWhen: (Space | NewLine)* When stepText;
-moreWhen: (Space | NewLine)* (Or | And | When) stepText;
+when: (Space | NewLine)* When stepText;
+
+or: (Space | NewLine)* Or stepText;
 
 then: (Space | NewLine)* Then stepText;
 
 stepText: content* (content | parameter)* (NewLine | EOF);
 
-parameter: Space* '"' word '"' (Space | NewLine)+;
+parameter: '"' word '"';
 
 content: Space* word+;
 

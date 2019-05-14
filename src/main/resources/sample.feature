@@ -6,4 +6,5 @@ Feature: featureName
 
   Scenario: scenarioName
     When some "field" has "value"
+    OR some "field" has "anotherValue"
     Then some action
