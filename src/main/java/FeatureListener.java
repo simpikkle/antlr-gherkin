@@ -1,8 +1,9 @@
-import org.antlr.v4.runtime.RuleContext;
+import domain.Feature;
+import domain.Location;
+import domain.Scenario;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FeatureListener extends GherkinBaseListener {
 
@@ -34,8 +35,19 @@ public class FeatureListener extends GherkinBaseListener {
 
     @Override
     public void enterScenario(GherkinParser.ScenarioContext ctx) {
-        currentScenario = new Scenario();
+        currentScenario = new Scenario(new Location(ctx), ctx.getText());
         currentScenario.setName(ctx.content().getText().trim());
+    }
+
+    @Override
+    public void enterBackground(GherkinParser.BackgroundContext ctx) {
+        currentScenario = new Scenario(new Location(ctx), ctx.getText());
+        currentScenario.setName("Background");
+    }
+
+    @Override
+    public void exitBackground(GherkinParser.BackgroundContext ctx) {
+        currentFeature.setBackground(currentScenario);
     }
 
     @Override
@@ -45,22 +57,17 @@ public class FeatureListener extends GherkinBaseListener {
 
     @Override
     public void enterWhen(GherkinParser.WhenContext ctx) {
-        Step step = new Step();
-        GherkinParser.StepTextContext stepContext = ctx.firstWhen().stepText();
-        step.setName(stepContext.getText());
-        step.setParameters(stepContext.parameter()
-                .stream()
-                .map(GherkinParser.ParameterContext::word)
-                .map(RuleContext::getText)
-                .collect(Collectors.toList()));
-        currentScenario.getSteps().add(step);
+        currentScenario.getSteps().add(ContextBuilder.buildStep(ctx.step()));
+    }
+
+    @Override
+    public void enterOr(GherkinParser.OrContext ctx) {
+        currentScenario.getSteps().add(ContextBuilder.buildStep(ctx.step()));
     }
 
     @Override
     public void enterThen(GherkinParser.ThenContext ctx) {
-        Step step = new Step();
-        step.setName(ctx.stepText().getText());
-        currentScenario.getSteps().add(step);
+        currentScenario.getSteps().add(ContextBuilder.buildStep(ctx.step()));
     }
 
     public List<Feature> getFeatures() {

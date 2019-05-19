@@ -1,10 +1,18 @@
+package domain;
+
 import java.util.List;
 
-public class Step {
+public class Step extends GherkinElement {
 
     private String name;
 
     private List<String> parameters;
+
+    private List<Row> rows;
+
+    public Step(Location location, String text) {
+        super(location, text);
+    }
 
     public String getName() {
         return name;
@@ -20,5 +28,13 @@ public class Step {
 
     public List<String> getParameters() {
         return parameters;
+    }
+
+    public List<Row> getRows() {
+        return rows;
+    }
+
+    public void setRows(List<Row> rows) {
+        this.rows = rows;
     }
 }

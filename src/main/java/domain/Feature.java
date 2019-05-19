@@ -1,3 +1,5 @@
+package domain;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,6 +8,8 @@ public class Feature {
     private String featureName;
 
     private String description;
+
+    private Scenario background;
 
     private List<Scenario> scenarios = new ArrayList<>();
 
@@ -32,4 +36,13 @@ public class Feature {
     public void setScenarios(List<Scenario> scenarios) {
         this.scenarios = scenarios;
     }
+
+    public void setBackground(Scenario background) {
+        this.background = background;
+    }
+
+    public Scenario getBackground() {
+        return background;
+    }
+
 }

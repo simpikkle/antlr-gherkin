@@ -1,3 +1,4 @@
+import domain.Feature;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -8,11 +9,14 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Objects;
 
 public class Main {
 
     private static Logger LOG = LoggerFactory.getLogger(Main.class);
+
+    //private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static void main(String[] args) throws IOException {
         GherkinLexer lexer = new GherkinLexer(getFile("sample.feature"));
@@ -23,7 +27,8 @@ public class Main {
         FeatureListener listener = new FeatureListener();
         ParseTree parseTree = parser.feature();
         walker.walk(listener, parseTree);
-        System.out.println(listener.getFeatures());
+        List<Feature> features = listener.getFeatures();
+        System.out.println(features);
     }
 
     private static CharStream getFile(String fileName) throws IOException {

@@ -14,15 +14,21 @@ blockBody: given* when* or* then*;
 
 scenario: (Space | NewLine)* Tag* Scenario content NewLine+ blockDescription* blockBody;
 
-given: (Space | NewLine)* Given stepText;
+given: (Space | NewLine)* Given step;
 
-when: (Space | NewLine)* When stepText;
+when: (Space | NewLine)* When step;
 
-or: (Space | NewLine)* Or stepText;
+or: (Space | NewLine)* Or step;
 
-then: (Space | NewLine)* Then stepText;
+then: (Space | NewLine)* Then step;
 
-stepText: content* (content | parameter)* (NewLine | EOF);
+step: stepText row*;
+
+stepText: (content | parameter)* (Or | NewLine | EOF);
+
+row: Space* Pipe cell+ (NewLine | EOF);
+
+cell: content Pipe;
 
 parameter: '"' word '"';
 
@@ -35,7 +41,7 @@ Tag:  '@' WORD_CHAR (Space | NewLine)+;
 Comment: Space* '#' .*? NewLine -> skip;
 
 And: 'And ';
-Or: 'Or ';
+Or: [Oo]'r ';
 Given: 'Given ';
 When: 'When ';
 Then: 'Then ';
@@ -46,6 +52,7 @@ Feature: 'Feature: ';
 
 Space : [ \t];
 NewLine : '\r'? '\n' | '\r';
+Pipe: '|';
 Char: WORD_CHAR;
 
 fragment WORD_CHAR: ~[ \t\r\n"]+?;

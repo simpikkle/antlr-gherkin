@@ -1,11 +1,17 @@
+package domain;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Scenario {
+public class Scenario extends GherkinElement {
 
     private String name;
 
     private List<Step> steps = new ArrayList<>();
+
+    public Scenario(Location location, String text) {
+        super(location, text);
+    }
 
     public String getName() {
         return name;
