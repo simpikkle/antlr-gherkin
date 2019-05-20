@@ -1,6 +1,10 @@
-import domain.Feature;
-import domain.Location;
-import domain.Scenario;
+package com.test.antlr;
+
+import com.test.antlr.domain.Feature;
+import com.test.antlr.domain.Location;
+import com.test.antlr.domain.Scenario;
+import com.test.antlr.grammar.GherkinBaseListener;
+import com.test.antlr.grammar.GherkinParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,17 +61,17 @@ public class FeatureListener extends GherkinBaseListener {
 
     @Override
     public void enterWhen(GherkinParser.WhenContext ctx) {
-        currentScenario.getSteps().add(ContextBuilder.buildStep(ctx.step()));
+        currentScenario.getSteps().add(ContextBuilder.buildStep(ctx.step(), Keyword.WHEN));
     }
 
     @Override
     public void enterOr(GherkinParser.OrContext ctx) {
-        currentScenario.getSteps().add(ContextBuilder.buildStep(ctx.step()));
+        currentScenario.getSteps().add(ContextBuilder.buildStep(ctx.step(), Keyword.OR));
     }
 
     @Override
     public void enterThen(GherkinParser.ThenContext ctx) {
-        currentScenario.getSteps().add(ContextBuilder.buildStep(ctx.step()));
+        currentScenario.getSteps().add(ContextBuilder.buildStep(ctx.step(), Keyword.THEN));
     }
 
     public List<Feature> getFeatures() {

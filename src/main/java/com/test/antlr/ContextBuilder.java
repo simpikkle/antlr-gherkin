@@ -1,15 +1,19 @@
-import domain.Location;
-import domain.Row;
-import domain.Step;
+package com.test.antlr;
+
+import com.test.antlr.domain.Location;
+import com.test.antlr.domain.Row;
+import com.test.antlr.domain.Step;
+import com.test.antlr.grammar.GherkinParser;
 import org.antlr.v4.runtime.RuleContext;
 
 import java.util.stream.Collectors;
 
 public class ContextBuilder {
 
-    public static Step buildStep(GherkinParser.StepContext stepContext) {
+    public static Step buildStep(GherkinParser.StepContext stepContext, Keyword keyword) {
         Step step = new Step(new Location(stepContext), stepContext.getText());
         step.setName(stepContext.stepText().getText());
+        step.setKeyword(keyword);
         step.setParameters(stepContext.stepText().parameter()
                 .stream()
                 .map(GherkinParser.ParameterContext::word)

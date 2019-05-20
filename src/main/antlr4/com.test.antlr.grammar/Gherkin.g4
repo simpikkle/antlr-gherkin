@@ -10,7 +10,7 @@ featureBody: background? scenario+;
 background: (Space | NewLine)* Tag* Background content NewLine+ blockDescription* blockBody NewLine+;
 
 blockDescription: ~(Given | When | Then) content NewLine+ ;
-blockBody: given* when* or* then*;
+blockBody: (given | when | or | then)*;
 
 scenario: (Space | NewLine)* Tag* Scenario content NewLine+ blockDescription* blockBody;
 
@@ -24,7 +24,7 @@ then: (Space | NewLine)* Then step;
 
 step: stepText row*;
 
-stepText: (content | parameter)* (Or | NewLine | EOF);
+stepText: (content | parameter)* (NewLine | EOF);
 
 row: Space* Pipe cell+ (NewLine | EOF);
 

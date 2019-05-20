@@ -1,4 +1,4 @@
-package domain;
+package com.test.antlr.domain;
 
 import java.util.List;
 

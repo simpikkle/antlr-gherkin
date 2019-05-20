@@ -5,12 +5,8 @@ Feature: featureName
     When some background check
 
   Scenario: scenarioName
-    When some "field" has "value"
-    Or some "field" has "anotherValue"
-    Then some action
-
-  Scenario: scenario with list of fields
-    When some "field" has "value"
-    Then list of fields
-      | fieldName1 | errorMessage |
-      | fieldName2 | errorMessage |
+    When field "country" contains "US"
+      or field "document" contains "Passport"
+    Then following fields are required
+      | taxId | Tax id is required for US citizens |
+      | address | Address is required for US citizens |

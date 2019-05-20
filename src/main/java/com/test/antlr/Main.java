@@ -1,4 +1,9 @@
-import domain.Feature;
+package com.test.antlr;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.test.antlr.domain.Feature;
+import com.test.antlr.grammar.GherkinLexer;
+import com.test.antlr.grammar.GherkinParser;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -16,7 +21,7 @@ public class Main {
 
     private static Logger LOG = LoggerFactory.getLogger(Main.class);
 
-    //private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static void main(String[] args) throws IOException {
         GherkinLexer lexer = new GherkinLexer(getFile("sample.feature"));
@@ -28,7 +33,7 @@ public class Main {
         ParseTree parseTree = parser.feature();
         walker.walk(listener, parseTree);
         List<Feature> features = listener.getFeatures();
-        System.out.println(features);
+        System.out.println(OBJECT_MAPPER.writeValueAsString(features));
     }
 
     private static CharStream getFile(String fileName) throws IOException {
