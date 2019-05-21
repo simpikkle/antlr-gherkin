@@ -38,12 +38,12 @@ public class FeatureListener extends GherkinBaseListener {
 
     @Override
     public void enterScenario(GherkinParser.ScenarioContext ctx) {
-        currentScenario = new Scenario(ctx);
+        currentScenario = ContextBuilder.buildScenario(ctx);
     }
 
     @Override
     public void enterBackground(GherkinParser.BackgroundContext ctx) {
-        currentScenario = new Scenario(ctx);
+        currentScenario = ContextBuilder.buildBackground(ctx);
     }
 
     @Override

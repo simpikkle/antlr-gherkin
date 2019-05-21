@@ -4,6 +4,7 @@ Feature: featureName
   Background: backgroundName
     When some background check
 
+    @Error(errorCode)
   Scenario: scenarioName
     When field "country" contains "US"
       or field "document" contains "Passport"

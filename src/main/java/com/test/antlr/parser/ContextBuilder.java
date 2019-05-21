@@ -1,8 +1,6 @@
 package com.test.antlr.parser;
 
-import com.test.antlr.domain.Location;
-import com.test.antlr.domain.Row;
-import com.test.antlr.domain.Step;
+import com.test.antlr.domain.*;
 import com.test.antlr.grammar.GherkinParser;
 import org.antlr.v4.runtime.RuleContext;
 
@@ -33,5 +31,33 @@ public class ContextBuilder {
                 .map(cellContext -> cellContext.content().getText())
                 .collect(Collectors.toList()));
         return row;
+    }
+
+    public static Scenario buildScenario(GherkinParser.ScenarioContext ctx) {
+        Location location = new Location(ctx);
+        Scenario scenario = new Scenario(location, ctx.getText());
+        scenario.setName(ctx.content().getText().trim());
+        scenario.setTags(ctx.tags().stream()
+                .map(ContextBuilder::buildTag)
+                .collect(Collectors.toList()));
+        return scenario;
+    }
+
+    private static Tag buildTag(GherkinParser.TagsContext tagContext) {
+        Tag tag = new Tag();
+        tag.setType(tagContext.content().getText());
+        tag.setValue(tagContext.value().content().getText());
+        return tag;
+    }
+
+    // TODO generify both to extend one node
+    public static Scenario buildBackground(GherkinParser.BackgroundContext ctx) {
+        Location location = new Location(ctx);
+        Scenario scenario = new Scenario(location, ctx.getText());
+        scenario.setName("Background");
+        scenario.setTags(ctx.tags().stream()
+                .map(ContextBuilder::buildTag)
+                .collect(Collectors.toList()));
+        return scenario;
     }
 }

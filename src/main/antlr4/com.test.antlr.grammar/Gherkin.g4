@@ -2,17 +2,21 @@ grammar Gherkin;
 
 feature: featureHeader featureBody;
 
-featureHeader: (Space | NewLine)* Tag* Feature content NewLine+ featureDescription*;
+featureHeader: (Space | NewLine)* tags* Feature content NewLine+ featureDescription*;
 featureDescription: ~(Background | Scenario | ScenarioOutline) content NewLine+ ;
 
 featureBody: background? scenario+;
 
-background: (Space | NewLine)* Tag* Background content NewLine+ blockDescription* blockBody NewLine+;
+background: (Space | NewLine)* tags* Background content NewLine+ blockDescription* blockBody NewLine+;
 
 blockDescription: ~(Given | When | Then) content NewLine+ ;
 blockBody: (given | when | or | then)*;
 
-scenario: (Space | NewLine)* Tag* Scenario content NewLine+ blockDescription* blockBody;
+scenario: (Space | NewLine)* tags* Space* Scenario content NewLine+ blockDescription* blockBody;
+
+tags: (Space | NewLine)* '@' content value? NewLine;
+
+value: '(' content ')';
 
 given: (Space | NewLine)* Given step;
 
@@ -36,8 +40,6 @@ content: Space* word+;
 
 word: Char (Char|Space)*;
 
-// Tokens
-Tag:  '@' WORD_CHAR (Space | NewLine)+;
 Comment: Space* '#' .*? NewLine -> skip;
 
 And: 'And ';
@@ -55,4 +57,4 @@ NewLine : '\r'? '\n' | '\r';
 Pipe: '|';
 Char: WORD_CHAR;
 
-fragment WORD_CHAR: ~[ \t\r\n"]+?;
+fragment WORD_CHAR: ~[ \t\r\n"()@]+?;
