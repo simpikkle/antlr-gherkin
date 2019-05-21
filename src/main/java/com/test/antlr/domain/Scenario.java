@@ -1,31 +1,31 @@
 package com.test.antlr.domain;
 
+import com.test.antlr.grammar.GherkinParser;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Scenario extends GherkinElement {
 
-    private String name;
+    private final String name;
 
-    private List<Step> steps = new ArrayList<>();
+    private final List<Step> steps = new ArrayList<>();
 
-    public Scenario(Location location, String text) {
-        super(location, text);
+    public Scenario(GherkinParser.ScenarioContext ctx) {
+        super(new Location(ctx), ctx.getText());
+        name = ctx.content().getText().trim();
+    }
+
+    public Scenario(GherkinParser.BackgroundContext ctx) {
+        super(new Location(ctx), ctx.getText());
+        name = "Background";
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public List<Step> getSteps() {
         return steps;
-    }
-
-    public void setSteps(List<Step> steps) {
-        this.steps = steps;
     }
 }

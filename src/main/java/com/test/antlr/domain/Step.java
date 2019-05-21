@@ -1,6 +1,6 @@
 package com.test.antlr.domain;
 
-import com.test.antlr.Keyword;
+import com.test.antlr.parser.Keyword;
 
 import java.util.List;
 

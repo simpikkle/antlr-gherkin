@@ -1,4 +1,4 @@
-package com.test.antlr;
+package com.test.antlr.parser;
 
 public enum Keyword {
     GIVEN,

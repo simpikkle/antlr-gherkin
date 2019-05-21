@@ -1,4 +1,4 @@
-package com.test.antlr;
+package com.test.antlr.parser;
 
 import com.test.antlr.domain.Location;
 import com.test.antlr.domain.Row;

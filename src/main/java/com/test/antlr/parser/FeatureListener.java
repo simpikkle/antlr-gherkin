@@ -1,7 +1,6 @@
-package com.test.antlr;
+package com.test.antlr.parser;
 
 import com.test.antlr.domain.Feature;
-import com.test.antlr.domain.Location;
 import com.test.antlr.domain.Scenario;
 import com.test.antlr.grammar.GherkinBaseListener;
 import com.test.antlr.grammar.GherkinParser;
@@ -39,14 +38,12 @@ public class FeatureListener extends GherkinBaseListener {
 
     @Override
     public void enterScenario(GherkinParser.ScenarioContext ctx) {
-        currentScenario = new Scenario(new Location(ctx), ctx.getText());
-        currentScenario.setName(ctx.content().getText().trim());
+        currentScenario = new Scenario(ctx);
     }
 
     @Override
     public void enterBackground(GherkinParser.BackgroundContext ctx) {
-        currentScenario = new Scenario(new Location(ctx), ctx.getText());
-        currentScenario.setName("Background");
+        currentScenario = new Scenario(ctx);
     }
 
     @Override

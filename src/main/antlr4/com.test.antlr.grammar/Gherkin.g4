@@ -41,7 +41,7 @@ Tag:  '@' WORD_CHAR (Space | NewLine)+;
 Comment: Space* '#' .*? NewLine -> skip;
 
 And: 'And ';
-Or: [Oo]'r ';
+Or: ' '[Oo]'r ';
 Given: 'Given ';
 When: 'When ';
 Then: 'Then ';
