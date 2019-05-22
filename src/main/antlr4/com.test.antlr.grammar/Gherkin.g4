@@ -14,9 +14,13 @@ blockBody: (given | when | or | then)*;
 
 scenario: (Space | NewLine)* tags* Space* Scenario content NewLine+ blockDescription* blockBody;
 
+// Annotations
+
 tags: (Space | NewLine)* '@' content value? NewLine;
 
 value: '(' content ')';
+
+// Keywords
 
 given: (Space | NewLine)* Given step;
 
@@ -25,6 +29,8 @@ when: (Space | NewLine)* When step;
 or: (Space | NewLine)* Or step;
 
 then: (Space | NewLine)* Then step;
+
+// Steps and data tables
 
 step: stepText row*;
 
@@ -36,11 +42,13 @@ cell: content Pipe;
 
 parameter: '"' word '"';
 
+// Common
+
 content: Space* word+;
 
 word: Char (Char|Space)*;
 
-Comment: Space* '#' .*? NewLine -> skip;
+//comment: Space* '#' content NewLine*;
 
 And: 'And ';
 Or: ' '[Oo]'r ';

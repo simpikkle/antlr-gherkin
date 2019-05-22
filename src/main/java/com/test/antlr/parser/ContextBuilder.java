@@ -4,12 +4,14 @@ import com.test.antlr.domain.*;
 import com.test.antlr.grammar.GherkinParser;
 import org.antlr.v4.runtime.RuleContext;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class ContextBuilder {
 
     public static Step buildStep(GherkinParser.StepContext stepContext, Keyword keyword) {
-        Step step = new Step(new Location(stepContext), stepContext.getText());
+        Step step = new Step(new Location(stepContext));
+        step.setText(stepContext.getText());
         step.setName(stepContext.stepText().getText());
         step.setKeyword(keyword);
         step.setParameters(stepContext.stepText().parameter()
@@ -25,7 +27,8 @@ public class ContextBuilder {
     }
 
     private static Row buildRow(GherkinParser.RowContext rowContext) {
-        Row row = new Row(new Location(rowContext), rowContext.getText());
+        Row row = new Row(new Location(rowContext));
+        row.setText(rowContext.getText());
         row.setCells(rowContext.cell()
                 .stream()
                 .map(cellContext -> cellContext.content().getText())
@@ -35,7 +38,8 @@ public class ContextBuilder {
 
     public static Scenario buildScenario(GherkinParser.ScenarioContext ctx) {
         Location location = new Location(ctx);
-        Scenario scenario = new Scenario(location, ctx.getText());
+        Scenario scenario = new Scenario(location);
+        scenario.setText(ctx.getText());
         scenario.setName(ctx.content().getText().trim());
         scenario.setTags(ctx.tags().stream()
                 .map(ContextBuilder::buildTag)
@@ -53,7 +57,8 @@ public class ContextBuilder {
     // TODO generify both to extend one node
     public static Scenario buildBackground(GherkinParser.BackgroundContext ctx) {
         Location location = new Location(ctx);
-        Scenario scenario = new Scenario(location, ctx.getText());
+        Scenario scenario = new Scenario(location);
+        scenario.setText(ctx.getText());
         scenario.setName("Background");
         scenario.setTags(ctx.tags().stream()
                 .map(ContextBuilder::buildTag)

@@ -6,8 +6,8 @@ public class Row extends GherkinElement {
 
     private List<String> cells;
 
-    public Row(Location location, String text) {
-        super(location, text);
+    public Row(Location location) {
+        super(location);
     }
 
     public List<String> getCells() {

@@ -11,8 +11,8 @@ public class Scenario extends GherkinElement {
 
     private String name;
 
-    public Scenario(Location location, String text) {
-        super(location, text);
+    public Scenario(Location location) {
+        super(location);
     }
 
     public String getName() {

@@ -2,6 +2,7 @@ package com.test.antlr.parser;
 
 import com.test.antlr.domain.Feature;
 import com.test.antlr.domain.Scenario;
+import com.test.antlr.domain.Step;
 import com.test.antlr.grammar.GherkinBaseListener;
 import com.test.antlr.grammar.GherkinParser;
 

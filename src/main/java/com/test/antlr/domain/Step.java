@@ -14,8 +14,8 @@ public class Step extends GherkinElement {
 
     private Keyword keyword;
 
-    public Step(Location location, String text) {
-        super(location, text);
+    public Step(Location location) {
+        super(location);
     }
 
     public String getName() {
