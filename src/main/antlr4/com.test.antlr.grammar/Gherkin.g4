@@ -48,7 +48,8 @@ content: Space* word+;
 
 word: Char (Char|Space)*;
 
-//comment: Space* '#' content NewLine*;
+Comment: Space* '#' .*? NewLine -> skip;
+EmptyLine: Space+ (NewLine | EOF) -> skip;
 
 And: 'And ';
 Or: ' '[Oo]'r ';
