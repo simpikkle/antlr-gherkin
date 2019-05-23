@@ -18,7 +18,8 @@ public class Parser {
 
     public List<Feature> parseFile(String fileName) {
         GherkinLexer lexer = new GherkinLexer(getFile(fileName));
-        CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
+        CollectorTokenSource tockenSource = new CollectorTokenSource(lexer);
+        CommonTokenStream commonTokenStream = new CommonTokenStream(tockenSource);
         GherkinParser parser = new GherkinParser(commonTokenStream);
 
         ParseTreeWalker walker = new ParseTreeWalker();

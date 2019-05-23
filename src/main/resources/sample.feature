@@ -1,3 +1,4 @@
+#Sample feature
 Feature: featureName
   Description
 
@@ -12,7 +13,15 @@ Feature: featureName
     When field "country" contains "US"
       or field "document" contains "Passport"
     Then following fields are required
-        #fieldName ErrorMessage
+        #fieldName #ErrorMessage
       | taxId | Tax id is required for US citizens |
       | address | Address is required for US citizens |
-    #TODO:DEV some step
+
+    @Error(errorCode)
+  Scenario: scenarioName
+    When field "country" contains "US"
+      or field "document" contains "Passport"
+    Then following fields are required
+      | taxId | Tax id is required for US citizens |
+      | address | Address is required for US citizens |
+      #TODO

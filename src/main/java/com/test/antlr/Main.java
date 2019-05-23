@@ -17,7 +17,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Parser parser = new Parser();
-        List<Feature> features = parser.parseFile("sample.feature");;
+        List<Feature> features = parser.parseFile("sample.feature");
         System.out.println(OBJECT_MAPPER.writeValueAsString(features));
     }
 }
