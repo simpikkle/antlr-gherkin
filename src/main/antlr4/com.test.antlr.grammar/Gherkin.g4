@@ -48,7 +48,7 @@ content: Space* word+;
 
 word: Char (Char|Space)*;
 
-Comment: Space* '#' .*? NewLine { $channel = HIDDEN; };
+Comment: Space* '#' .*? NewLine -> channel(2);
 EmptyLine: Space+ (NewLine | EOF) -> skip;
 
 And: 'And ';

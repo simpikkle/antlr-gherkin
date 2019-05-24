@@ -18,14 +18,13 @@ public class Parser {
 
     public List<Feature> parseFile(String fileName) {
         GherkinLexer lexer = new GherkinLexer(getFile(fileName));
-        CollectorTokenSource tockenSource = new CollectorTokenSource(lexer);
-        CommonTokenStream commonTokenStream = new CommonTokenStream(tockenSource);
+        CollectorTokenSource tokenSource = new CollectorTokenSource(lexer);
+        CommonTokenStream commonTokenStream = new CommonTokenStream(tokenSource);
         GherkinParser parser = new GherkinParser(commonTokenStream);
 
-        ParseTreeWalker walker = new ParseTreeWalker();
         FeatureListener listener = new FeatureListener();
         ParseTree parseTree = parser.feature();
-        walker.walk(listener, parseTree);
+        ParseTreeWalker.DEFAULT.walk(listener, parseTree);
         return listener.getFeatures();
     }
 

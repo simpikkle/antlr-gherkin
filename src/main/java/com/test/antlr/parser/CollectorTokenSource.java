@@ -29,7 +29,7 @@ public class CollectorTokenSource implements TokenSource {
     }
 
     private boolean shouldCollect(Token token) {
-        return token.getChannel() != Token.DEFAULT_CHANNEL;
+        return token.getChannel() >= Token.MIN_USER_CHANNEL_VALUE;
     }
 
     public List<Token> getCollectedTokens() {
