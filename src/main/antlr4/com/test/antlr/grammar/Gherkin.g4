@@ -34,11 +34,13 @@ step: stepText (NewLine+ | EOF) row*;
 
 stepText: (content | parameter)*;
 
-row: Space* Pipe cell+ (NewLine | EOF);
+row: Space* '|' cell+ (NewLine+ | EOF);
 
-cell: content Pipe;
+cell: content '|';
 
-parameter: '"' content '"';
+parameter: '"' anyText '"';
+
+anyText: .*?;
 
 // Common
 
@@ -48,7 +50,7 @@ Comment: Space* '#' .*? NewLine -> channel(2);
 EmptyLine: Space+ (NewLine | EOF) -> skip;
 
 And: 'And ';
-Or: ' '[Oo]'r ';
+Or: 'Or ';
 Given: 'Given ';
 When: 'When ';
 Then: 'Then ';
@@ -59,5 +61,4 @@ Feature: 'Feature: ';
 
 Space : [ \t];
 NewLine : '\r\n' | '\n';
-Pipe: '|';
-Char: ~[ \t\r\n"()@]+?;
+Char: ~[ \t\r\n]+?;

@@ -25,4 +25,38 @@ public class StepParserTest {
         Assertions.assertThat(step.getText()).isEqualTo("Then do something");
     }
 
+    @Test
+    public void simpleParameterStep() {
+        String featureFile = featureBuilder.append("Then field \"fieldName\" must contain value").toString();
+        Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));
+
+        Assertions.assertThat(feature.getScenarios().get(0).getSteps()).hasSize(1);
+        Step step = feature.getScenarios().get(0).getSteps().get(0);
+        Assertions.assertThat(step.getStepText()).isEqualTo("field \"fieldName\" must contain value");
+        Assertions.assertThat(step.getParameters()).hasSize(1);
+        Assertions.assertThat(step.getParameters().get(0)).isEqualTo("fieldName");
+    }
+
+    @Test
+    public void multiWordParameter() {
+        String featureFile = featureBuilder.append("Then field \"field name\" must contain value").toString();
+        Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));
+
+        Assertions.assertThat(feature.getScenarios().get(0).getSteps()).hasSize(1);
+        Step step = feature.getScenarios().get(0).getSteps().get(0);
+        Assertions.assertThat(step.getParameters()).hasSize(1);
+        Assertions.assertThat(step.getParameters().get(0)).isEqualTo("field name");
+    }
+
+    @Test
+    public void regexParameter() {
+        String featureFile = featureBuilder.append("Then field must match \"^([a-zA-z]+@[a-zA-z]{3,}.[com|net])$\"").toString();
+        Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));
+
+        Assertions.assertThat(feature.getScenarios().get(0).getSteps()).hasSize(1);
+        Step step = feature.getScenarios().get(0).getSteps().get(0);
+        Assertions.assertThat(step.getParameters()).hasSize(1);
+        Assertions.assertThat(step.getParameters().get(0)).isEqualTo("^([a-zA-z]+@[a-zA-z]{3,}.[com|net])$");
+    }
+
 }

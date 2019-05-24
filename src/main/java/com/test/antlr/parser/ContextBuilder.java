@@ -20,7 +20,7 @@ public class ContextBuilder {
         step.setKeyword(keyword);
         step.setParameters(stepContext.stepText().parameter()
                 .stream()
-                .map(GherkinParser.ParameterContext::content)
+                .map(GherkinParser.ParameterContext::anyText)
                 .map(RuleContext::getText)
                 .collect(Collectors.toList()));
         step.setRows(stepContext.row()
