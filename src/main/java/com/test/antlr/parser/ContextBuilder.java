@@ -2,22 +2,25 @@ package com.test.antlr.parser;
 
 import com.test.antlr.domain.*;
 import com.test.antlr.grammar.GherkinParser;
-import javafx.scene.control.Cell;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RuleContext;
 
 import java.util.stream.Collectors;
 
+import static com.test.antlr.parser.FeatureListener.EOF;
+
 public class ContextBuilder {
 
     public static Step buildStep(GherkinParser.StepContext stepContext, Keyword keyword) {
         Step step = new Step(buildLocation(stepContext));
-        step.setText(stepContext.getText());
-        step.setName(stepContext.stepText().getText());
+        // TODO remove replacement
+        step.setText(keyword.getName() + " " + stepContext.getText().replaceAll(EOF, ""));
+        // TODO remove trim
+        step.setStepText(stepContext.stepText().getText().trim());
         step.setKeyword(keyword);
         step.setParameters(stepContext.stepText().parameter()
                 .stream()
-                .map(GherkinParser.ParameterContext::word)
+                .map(GherkinParser.ParameterContext::content)
                 .map(RuleContext::getText)
                 .collect(Collectors.toList()));
         step.setRows(stepContext.row()
@@ -42,12 +45,14 @@ public class ContextBuilder {
     }
 
     private static TableCell buildCell(GherkinParser.CellContext cellContext) {
-        return new TableCell(buildLocation(cellContext), cellContext.content().getText());
+        return new TableCell(buildLocation(cellContext), cellContext.content().getText().trim());
     }
 
     public static Scenario buildScenario(GherkinParser.ScenarioContext ctx) {
         Scenario scenario = new Scenario(buildLocation(ctx));
-        scenario.setText(ctx.getText());
+        // TODO remove replacement
+        scenario.setText(ctx.getText().replaceAll(EOF, ""));
+        // TODO remove trim
         scenario.setName(ctx.content().getText().trim());
         scenario.setTags(ctx.tags().stream()
                 .map(ContextBuilder::buildTag)

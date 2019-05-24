@@ -9,7 +9,7 @@ import java.io.ByteArrayInputStream;
 
 public class ParserTest {
 
-    Parser parser = new Parser();
+    private Parser parser = new Parser();
 
     @Test
     public void testEmptyFile() {

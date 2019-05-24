@@ -18,11 +18,11 @@ public class FeatureListener extends GherkinBaseListener {
 
     @Override
     public void enterFeature(GherkinParser.FeatureContext ctx) {
+        LOGGER.info("Start parsing feature");
         if (isEmpty(ctx.getText())) {
             LOGGER.info("Empty file");
             return;
         }
-        LOGGER.info("Start parsing feature");
         feature = new Feature();
     }
 
@@ -33,20 +33,11 @@ public class FeatureListener extends GherkinBaseListener {
 
     @Override
     public void enterFeatureHeader(GherkinParser.FeatureHeaderContext ctx) {
-        if (isEmpty(ctx.getText())) {
+        if (isEmpty(ctx.getText()) || ctx.content() == null) {
             LOGGER.info("Empty feature header");
             return;
         }
         feature.setFeatureName(ctx.content().getText().trim());
-    }
-
-    @Override
-    public void enterFeatureDescription(GherkinParser.FeatureDescriptionContext ctx) {
-        if (isEmpty(ctx.getText())) {
-            LOGGER.info("Empty feature description");
-            return;
-        }
-        feature.setDescription(ctx.content().getText().trim());
     }
 
     @Override

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Step extends GherkinElement {
 
-    private String name;
+    private String stepText;
 
     private List<String> parameters;
 
@@ -16,12 +16,12 @@ public class Step extends GherkinElement {
         super(location);
     }
 
-    public String getName() {
-        return name;
+    public String getStepText() {
+        return stepText;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStepText(String stepText) {
+        this.stepText = stepText;
     }
 
     public void setParameters(List<String> parameters) {

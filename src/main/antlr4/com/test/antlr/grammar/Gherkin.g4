@@ -2,17 +2,15 @@ grammar Gherkin;
 
 feature: featureHeader featureBody;
 
-featureHeader: (Space | NewLine)* tags* Feature content EndOfLine featureDescription*;
-featureDescription: ~(Background | Scenario | ScenarioOutline) content EndOfLine;
+featureHeader: (Space | NewLine)* tags* Feature content NewLine+;
 
 featureBody: background? scenario+;
 
-background: (Space | NewLine)* tags* Background content? EndOfLine blockDescription* blockBody EndOfLine;
+background: (Space | NewLine)* tags* Background content? (NewLine | EOF) blockBody (NewLine | EOF);
 
-blockDescription: ~(Given | When | Then) content EndOfLine;
 blockBody: (given | when | or | then)*;
 
-scenario: (Space | NewLine)* tags* Space* Scenario content EndOfLine blockDescription* blockBody;
+scenario: (Space | NewLine)* tags* Space* Scenario content (NewLine | EOF) blockBody;
 
 // Annotations
 
@@ -32,23 +30,19 @@ then: (Space | NewLine)* Then step;
 
 // Steps and data tables
 
-step: stepText row*;
+step: stepText (NewLine+ | EOF) row*;
 
-stepText: (content | parameter)* EndOfLine;
+stepText: (content | parameter)*;
 
-row: Space* Pipe cell+ EndOfLine;
+row: Space* Pipe cell+ (NewLine | EOF);
 
 cell: content Pipe;
 
-parameter: '"' word '"';
+parameter: '"' content '"';
 
 // Common
 
-content: Space* word+;
-
-word: Char (Char|Space)*;
-
-EndOfLine: Space* (NewLine | EOF);
+content: Space* Char (Char|Space)*;
 
 Comment: Space* '#' .*? NewLine -> channel(2);
 EmptyLine: Space+ (NewLine | EOF) -> skip;
@@ -64,8 +58,6 @@ ScenarioOutline: 'Scenario Outline: ';
 Feature: 'Feature: ';
 
 Space : [ \t];
-NewLine : '\r'? '\n' | '\r';
+NewLine : '\r\n' | '\n';
 Pipe: '|';
-Char: WORD_CHAR;
-
-fragment WORD_CHAR: ~[ \t\r\n"()@]+?;
+Char: ~[ \t\r\n"()@]+?;
