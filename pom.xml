@@ -8,6 +8,12 @@
     <artifactId>antlr-gherkin</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <mockito.version>2.8.47</mockito.version>
+        <assertj-core.version>3.8.0</assertj-core.version>
+        <junit.version>5.2.0</junit.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -34,6 +40,24 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-runner</artifactId>
+            <version>1.2.0</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>

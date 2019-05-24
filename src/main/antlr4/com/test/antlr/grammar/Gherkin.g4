@@ -2,17 +2,17 @@ grammar Gherkin;
 
 feature: featureHeader featureBody;
 
-featureHeader: (Space | NewLine)* tags* Feature content NewLine+ featureDescription*;
-featureDescription: ~(Background | Scenario | ScenarioOutline) content NewLine+ ;
+featureHeader: (Space | NewLine)* tags* Feature content EndOfLine featureDescription*;
+featureDescription: ~(Background | Scenario | ScenarioOutline) content EndOfLine;
 
 featureBody: background? scenario+;
 
-background: (Space | NewLine)* tags* Background content NewLine+ blockDescription* blockBody NewLine+;
+background: (Space | NewLine)* tags* Background content? EndOfLine blockDescription* blockBody EndOfLine;
 
-blockDescription: ~(Given | When | Then) content NewLine+ ;
+blockDescription: ~(Given | When | Then) content EndOfLine;
 blockBody: (given | when | or | then)*;
 
-scenario: (Space | NewLine)* tags* Space* Scenario content NewLine+ blockDescription* blockBody;
+scenario: (Space | NewLine)* tags* Space* Scenario content EndOfLine blockDescription* blockBody;
 
 // Annotations
 
@@ -34,9 +34,9 @@ then: (Space | NewLine)* Then step;
 
 step: stepText row*;
 
-stepText: (content | parameter)* (NewLine | EOF);
+stepText: (content | parameter)* EndOfLine;
 
-row: Space* Pipe cell+ (NewLine | EOF);
+row: Space* Pipe cell+ EndOfLine;
 
 cell: content Pipe;
 
@@ -47,6 +47,8 @@ parameter: '"' word '"';
 content: Space* word+;
 
 word: Char (Char|Space)*;
+
+EndOfLine: Space* (NewLine | EOF);
 
 Comment: Space* '#' .*? NewLine -> channel(2);
 EmptyLine: Space+ (NewLine | EOF) -> skip;

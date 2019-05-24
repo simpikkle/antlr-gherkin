@@ -1,7 +1,5 @@
 package com.test.antlr.domain;
 
-import com.test.antlr.parser.Keyword;
-
 import java.util.List;
 
 public class Step extends GherkinElement {
@@ -10,7 +8,7 @@ public class Step extends GherkinElement {
 
     private List<String> parameters;
 
-    private List<Row> rows;
+    private List<TableRow> rows;
 
     private Keyword keyword;
 
@@ -34,11 +32,11 @@ public class Step extends GherkinElement {
         return parameters;
     }
 
-    public List<Row> getRows() {
+    public List<TableRow> getRows() {
         return rows;
     }
 
-    public void setRows(List<Row> rows) {
+    public void setRows(List<TableRow> tableRows) {
         this.rows = rows;
     }
 

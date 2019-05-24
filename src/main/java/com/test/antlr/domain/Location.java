@@ -1,16 +1,21 @@
 package com.test.antlr.domain;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-
 public class Location {
 
     private final int line;
 
-    public Location(ParserRuleContext context) {
-        this.line = context.getStart().getLine();
+    private final int column;
+
+    public Location(int line, int column) {
+        this.line = line;
+        this.column = column;
     }
 
     public int getLine() {
         return line;
+    }
+
+    public int getColumn() {
+        return column;
     }
 }
