@@ -16,7 +16,7 @@ scenario: (Space | NewLine)* tags* Space* Scenario content (NewLine | EOF) block
 
 tags: (Space | NewLine)* '@' content value? NewLine;
 
-value: '(' content ')';
+value: LBracket content RBracket;
 
 // Keywords
 
@@ -30,7 +30,9 @@ then: (Space | NewLine)* Then step;
 
 // Steps and data tables
 
-step: stepText (NewLine+ | EOF) row*;
+step: stepContent row*;
+
+stepContent: stepText (NewLine+ | EOF);
 
 stepText: (content | parameter)*;
 
@@ -38,9 +40,7 @@ row: Space* '|' cell+ (NewLine+ | EOF);
 
 cell: content '|';
 
-parameter: '"' anyText '"';
-
-anyText: .*?;
+parameter: '"' .*? '"';
 
 // Common
 
@@ -54,11 +54,12 @@ Or: 'Or ';
 Given: 'Given ';
 When: 'When ';
 Then: 'Then ';
-Background: 'Background: ';
-Scenario: 'Scenario: ';
-ScenarioOutline: 'Scenario Outline: ';
+Background: 'Background:';
+Scenario: 'Scenario:';
 Feature: 'Feature: ';
 
 Space : [ \t];
 NewLine : '\r\n' | '\n';
 Char: ~[ \t\r\n]+?;
+LBracket: '(';
+RBracket: ')';

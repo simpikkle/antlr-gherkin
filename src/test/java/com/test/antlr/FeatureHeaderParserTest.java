@@ -34,22 +34,4 @@ public class FeatureHeaderParserTest {
         Assertions.assertThat(feature).isNotNull();
         Assertions.assertThat(feature.getFeatureName()).isEqualTo("feature");
     }
-
-    @Test
-    public void featureWithNameAndDescription() {
-        String featureFile = "Feature: feature\n Description";
-        Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));
-        Assertions.assertThat(feature).isNotNull();
-        Assertions.assertThat(feature.getFeatureName()).isEqualTo("feature");
-        Assertions.assertThat(feature.getDescription()).isEqualTo("Description");
-    }
-
-    @Test
-    public void featureWithNameAndDescriptionSurroundedBySpaces() {
-        String featureFile = "  Feature: feature  \n  Description  ";
-        Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));
-        Assertions.assertThat(feature).isNotNull();
-        Assertions.assertThat(feature.getFeatureName()).isEqualTo("feature");
-        Assertions.assertThat(feature.getDescription()).isEqualTo("Description");
-    }
 }

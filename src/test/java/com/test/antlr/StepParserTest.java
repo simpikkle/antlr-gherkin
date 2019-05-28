@@ -26,6 +26,23 @@ public class StepParserTest {
     }
 
     @Test
+    public void stepWithParameters() {
+        String featureFile = featureBuilder.append("Then check following fields\n")
+                .append("| param1 | param2 (next) |\n")
+                .append("| param3 | param4 |")
+                .toString();
+        Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));
+
+        Assertions.assertThat(feature.getScenarios().get(0).getSteps()).hasSize(1);
+        Step step = feature.getScenarios().get(0).getSteps().get(0);
+        Assertions.assertThat(step.getStepText()).isEqualTo("check following fields");
+        Assertions.assertThat(step.getRows()).hasSize(2);
+        Assertions.assertThat(step.getRows().get(0).getCells()).hasSize(2);
+        Assertions.assertThat(step.getRows().get(0).getCells().get(0).getValue()).isEqualTo("param1");
+        Assertions.assertThat(step.getRows().get(0).getCells().get(1).getValue()).isEqualTo("param2 (next)");
+    }
+
+    @Test
     public void simpleParameterStep() {
         String featureFile = featureBuilder.append("Then field \"fieldName\" must contain value").toString();
         Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));
@@ -58,5 +75,4 @@ public class StepParserTest {
         Assertions.assertThat(step.getParameters()).hasSize(1);
         Assertions.assertThat(step.getParameters().get(0)).isEqualTo("^([a-zA-z]+@[a-zA-z]{3,}.[com|net])$");
     }
-
 }

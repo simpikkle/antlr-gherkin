@@ -36,7 +36,7 @@ public class Step extends GherkinElement {
         return rows;
     }
 
-    public void setRows(List<TableRow> tableRows) {
+    public void setRows(List<TableRow> rows) {
         this.rows = rows;
     }
 

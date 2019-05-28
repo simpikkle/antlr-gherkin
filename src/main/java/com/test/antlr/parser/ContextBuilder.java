@@ -16,12 +16,13 @@ public class ContextBuilder {
         // TODO remove replacement
         step.setText(keyword.getName() + " " + stepContext.getText().replaceAll(EOF, ""));
         // TODO remove trim
-        step.setStepText(stepContext.stepText().getText().trim());
+        step.setStepText(stepContext.stepContent().stepText().getText().trim());
         step.setKeyword(keyword);
-        step.setParameters(stepContext.stepText().parameter()
+        step.setParameters(stepContext.stepContent().stepText().parameter()
                 .stream()
-                .map(GherkinParser.ParameterContext::anyText)
-                .map(RuleContext::getText)
+                .map(GherkinParser.ParameterContext::getText)
+                // TODO remove replacement
+                .map(parameter -> parameter.replaceAll("\"", ""))
                 .collect(Collectors.toList()));
         step.setRows(stepContext.row()
                 .stream()
