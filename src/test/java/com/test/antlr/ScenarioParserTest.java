@@ -55,6 +55,26 @@ public class ScenarioParserTest {
     }
 
     @Test
+    public void scenarioWithAtInName() {
+        String featureFile = featureBuilder.append("Scenario: scenario@mail.mail").toString();
+        Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));
+        Assertions.assertThat(feature).isNotNull();
+        Assertions.assertThat(feature.getScenarios()).hasSize(1);
+        Scenario scenario = feature.getScenarios().get(0);
+        Assertions.assertThat(scenario.getName()).isEqualTo("scenario@mail.mail");
+    }
+
+    @Test
+    public void scenarioWithQuotesInName() {
+        String featureFile = featureBuilder.append("Scenario: some \"name\"").toString();
+        Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));
+        Assertions.assertThat(feature).isNotNull();
+        Assertions.assertThat(feature.getScenarios()).hasSize(1);
+        Scenario scenario = feature.getScenarios().get(0);
+        Assertions.assertThat(scenario.getName()).isEqualTo("some \"name\"");
+    }
+
+    @Test
     public void scenarioWithTags() {
         String featureFile = featureBuilder.append("@Tag(value)\n@Tag2(value2)\nScenario: scenario").toString();
         Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));

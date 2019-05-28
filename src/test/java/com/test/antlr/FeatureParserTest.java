@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 
-public class FeatureHeaderParserTest {
+public class FeatureParserTest {
 
     private Parser parser = new Parser();
 

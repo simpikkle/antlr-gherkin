@@ -14,7 +14,7 @@ scenario: (Space | NewLine)* tags* Space* Scenario Space* content (NewLine | EOF
 
 // Annotations
 
-tags: (Space | NewLine)* '@' anyText value? Space* NewLine;
+tags: (Space | NewLine)* At anyText value? Space* NewLine;
 
 anyText: .*?;
 
@@ -46,7 +46,7 @@ parameter: Quote anyText Quote;
 
 // Common
 
-content: (Char|LBracket) (Char|LBracket|RBracket|Space)*;
+content: (Char|LBracket) (Char|LBracket|RBracket|At|Quote|Space)*;
 
 Comment: Space* '#' .*? (NewLine | EOF) -> channel(2);
 EmptyLine: NewLine Space+ (NewLine | EOF) -> skip;
@@ -65,4 +65,5 @@ NewLine : '\r\n' | '\n';
 Quote: '"';
 LBracket: '(';
 RBracket: ')';
+At: '@';
 Char: ~[ \t\r\n()]+?;
