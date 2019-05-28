@@ -30,6 +30,21 @@ public class ScenarioParserTest {
     }
 
     @Test
+    public void scenarioWithSpacesAfterBackground() {
+        String featureFile = featureBuilder
+                .append("Background: \n When something\n\n")
+                .append("Scenario: scenario\n Then something").toString();
+        Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));
+        Assertions.assertThat(feature).isNotNull();
+        Assertions.assertThat(feature.getBackground()).isNotNull();
+        Assertions.assertThat(feature.getBackground().getSteps()).hasSize(1);
+
+        Assertions.assertThat(feature.getScenarios()).hasSize(1);
+        Scenario scenario = feature.getScenarios().get(0);
+        Assertions.assertThat(scenario.getName()).isEqualTo("scenario");
+    }
+
+    @Test
     public void scenarioWithName() {
         String featureFile = featureBuilder.append("Scenario: scenario").toString();
         Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));
