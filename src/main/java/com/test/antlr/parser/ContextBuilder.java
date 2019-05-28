@@ -13,16 +13,14 @@ public class ContextBuilder {
 
     public static Step buildStep(GherkinParser.StepContext stepContext, Keyword keyword) {
         Step step = new Step(buildLocation(stepContext));
-        // TODO remove replacement
+        // TODO remove EOF replacement
         step.setText(keyword.getName() + " " + stepContext.getText().replaceAll(EOF, ""));
-        // TODO remove trim
         step.setStepText(stepContext.stepContent().stepText().getText().trim());
         step.setKeyword(keyword);
         step.setParameters(stepContext.stepContent().stepText().parameter()
                 .stream()
-                .map(GherkinParser.ParameterContext::getText)
-                // TODO remove replacement
-                .map(parameter -> parameter.replaceAll("\"", ""))
+                .map(GherkinParser.ParameterContext::anyText)
+                .map(RuleContext::getText)
                 .collect(Collectors.toList()));
         step.setRows(stepContext.row()
                 .stream()
@@ -46,14 +44,13 @@ public class ContextBuilder {
     }
 
     private static TableCell buildCell(GherkinParser.CellContext cellContext) {
-        return new TableCell(buildLocation(cellContext), cellContext.content().getText().trim());
+        return new TableCell(buildLocation(cellContext), cellContext.content().getText().trim().trim());
     }
 
     public static Scenario buildScenario(GherkinParser.ScenarioContext ctx) {
         Scenario scenario = new Scenario(buildLocation(ctx));
-        // TODO remove replacement
+        // TODO remove EOF replacement
         scenario.setText(ctx.getText().replaceAll(EOF, ""));
-        // TODO remove trim
         scenario.setName(ctx.content().getText().trim());
         scenario.setTags(ctx.tags().stream()
                 .map(ContextBuilder::buildTag)
@@ -63,8 +60,10 @@ public class ContextBuilder {
 
     private static Tag buildTag(GherkinParser.TagsContext tagContext) {
         Tag tag = new Tag();
-        tag.setType(tagContext.content().getText());
-        tag.setValue(tagContext.value().content().getText());
+        tag.setType(tagContext.anyText().getText());
+        if (tagContext.value() != null) {
+            tag.setValue(tagContext.value().content().getText().trim());
+        }
         return tag;
     }
 
@@ -76,4 +75,14 @@ public class ContextBuilder {
                 .collect(Collectors.toList()));
         return scenario;
     }
+
+    public static Feature buildFeature(GherkinParser.FeatureHeaderContext ctx) {
+        Feature feature = new Feature();
+        feature.setFeatureName(ctx.content().getText().trim());
+        feature.setTags(ctx.tags().stream()
+                .map(ContextBuilder::buildTag)
+                .collect(Collectors.toList()));
+        return feature;
+    }
+
 }

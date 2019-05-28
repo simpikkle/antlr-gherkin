@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Feature {
 
+    private List<Tag> tags;
+
     private String featureName;
 
     private String description;
@@ -45,4 +47,11 @@ public class Feature {
         return background;
     }
 
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 }

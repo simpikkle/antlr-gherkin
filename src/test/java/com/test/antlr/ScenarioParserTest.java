@@ -55,6 +55,21 @@ public class ScenarioParserTest {
     }
 
     @Test
+    public void scenarioWithTags() {
+        String featureFile = featureBuilder.append("@Tag(value)\n@Tag2(value2)\nScenario: scenario").toString();
+        Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));
+        Assertions.assertThat(feature).isNotNull();
+        Assertions.assertThat(feature.getScenarios()).hasSize(1);
+        Scenario scenario = feature.getScenarios().get(0);
+        Assertions.assertThat(scenario.getName()).isEqualTo("scenario");
+        Assertions.assertThat(scenario.getTags()).hasSize(2);
+        Assertions.assertThat(scenario.getTags().get(0).getType()).isEqualTo("Tag");
+        Assertions.assertThat(scenario.getTags().get(0).getValue()).isEqualTo("value");
+        Assertions.assertThat(scenario.getTags().get(1).getType()).isEqualTo("Tag2");
+        Assertions.assertThat(scenario.getTags().get(1).getValue()).isEqualTo("value2");
+    }
+
+    @Test
     public void scenarioWithStep() {
         String featureFile = featureBuilder.append("Scenario: scenario \n  When something \n  Then something").toString();
         Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));

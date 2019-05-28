@@ -1,6 +1,5 @@
 #Sample feature
 Feature: featureName
-  Description
 
   #Background comment
   Background: backgroundName
@@ -11,7 +10,7 @@ Feature: featureName
   Scenario: scenarioName
       # Step comment
     When field "country" contains "US"
-      or field "document" contains "Passport"
+      Or field "document" contains "Passport"
     Then following fields are required
         #fieldName #ErrorMessage
       | taxId | Tax id is required for US citizens |

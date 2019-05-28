@@ -17,16 +17,6 @@ public class FeatureListener extends GherkinBaseListener {
     private Scenario currentScenario;
 
     @Override
-    public void enterFeature(GherkinParser.FeatureContext ctx) {
-        LOGGER.info("Start parsing feature");
-        if (isEmpty(ctx.getText())) {
-            LOGGER.info("Empty file");
-            return;
-        }
-        feature = new Feature();
-    }
-
-    @Override
     public void exitFeature(GherkinParser.FeatureContext ctx) {
         LOGGER.info("Exit parsing feature");
     }
@@ -37,7 +27,7 @@ public class FeatureListener extends GherkinBaseListener {
             LOGGER.info("Empty feature header");
             return;
         }
-        feature.setFeatureName(ctx.content().getText().trim());
+        feature = ContextBuilder.buildFeature(ctx);
     }
 
     @Override
@@ -63,6 +53,11 @@ public class FeatureListener extends GherkinBaseListener {
     @Override
     public void exitScenario(GherkinParser.ScenarioContext ctx) {
         feature.getScenarios().add(currentScenario);
+    }
+
+    @Override
+    public void enterGiven(GherkinParser.GivenContext ctx) {
+        currentScenario.getSteps().add(ContextBuilder.buildStep(ctx.step(), Keyword.GIVEN));
     }
 
     @Override

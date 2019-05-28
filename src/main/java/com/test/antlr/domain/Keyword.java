@@ -4,8 +4,7 @@ public enum Keyword {
     GIVEN("Given"),
     WHEN("When"),
     THEN("Then"),
-    OR("Or")
-    ;
+    OR("Or");
 
     private final String name;
 

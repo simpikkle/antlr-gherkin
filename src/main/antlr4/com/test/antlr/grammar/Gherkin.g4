@@ -14,7 +14,9 @@ scenario: (Space | NewLine)* tags* Space* Scenario Space* content (NewLine | EOF
 
 // Annotations
 
-tags: (Space | NewLine)* '@' content value? NewLine;
+tags: (Space | NewLine)* '@' anyText value? Space* NewLine;
+
+anyText: .*?;
 
 value: LBracket content RBracket;
 
@@ -40,11 +42,11 @@ row: Space* '|' cell+ (NewLine+ | EOF);
 
 cell: Space* content '|';
 
-parameter: Quote .*? Quote;
+parameter: Quote anyText Quote;
 
 // Common
 
-content: Char (Char|Space)*;
+content: (Char|LBracket) (Char|LBracket|RBracket|Space)*;
 
 Comment: Space* '#' .*? (NewLine | EOF) -> channel(2);
 EmptyLine: NewLine Space+ (NewLine | EOF) -> skip;
@@ -61,6 +63,6 @@ Feature: 'Feature:';
 Space : [ \t];
 NewLine : '\r\n' | '\n';
 Quote: '"';
-Char: ~[ \t\r\n]+?;
 LBracket: '(';
 RBracket: ')';
+Char: ~[ \t\r\n()]+?;
