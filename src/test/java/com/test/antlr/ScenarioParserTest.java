@@ -55,6 +55,16 @@ public class ScenarioParserTest {
     }
 
     @Test
+    public void scenarioWithSpacesBeforeColon() {
+        String featureFile = featureBuilder.append("Scenario    : scenario").toString();
+        Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));
+        Assertions.assertThat(feature).isNotNull();
+        Assertions.assertThat(feature.getScenarios()).hasSize(1);
+        Scenario scenario = feature.getScenarios().get(0);
+        Assertions.assertThat(scenario.getName()).isEqualTo("scenario");
+    }
+
+    @Test
     public void scenarioWithAtInName() {
         String featureFile = featureBuilder.append("Scenario: scenario@mail.mail").toString();
         Feature feature = parser.parse(new ByteArrayInputStream(featureFile.getBytes()));

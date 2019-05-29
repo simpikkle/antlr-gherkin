@@ -60,9 +60,9 @@ Or: 'Or ';
 Given: 'Given ';
 When: 'When ';
 Then: 'Then ';
-Background: 'Background' COLON;
-Scenario: 'Scenario' COLON;
-Feature: 'Feature' COLON;
+Background: 'Background' [ ]* COLON;
+Scenario: 'Scenario' [ ]* COLON;
+Feature: 'Feature' [ ]* COLON;
 
 Space : [ \t];
 NewLine : '\r\n' | '\n';
