@@ -36,17 +36,21 @@ step: Space* stepContent row*;
 
 stepContent: stepText (NewLine+ | EOF);
 
-stepText: (content | Space | parameter)*;
+stepText: (contentNoQuotes | Space | parameter)*;
 
-row: Space* '|' cell+ (NewLine+ | EOF);
+row: Space* Pipe cell+ (NewLine+ | EOF);
 
-cell: Space* content '|';
+cell: Space* contentNoPipes Pipe;
 
 parameter: Quote anyText Quote;
 
 // Common
 
-content: (Char|LBracket) (Char|LBracket|RBracket|At|Quote|Space)*;
+contentNoQuotes: (Char|LBracket) (Char|LBracket|RBracket|At|Pipe|Space)*;
+
+contentNoPipes: (Char|LBracket) (Char|LBracket|RBracket|At|Quote|Space)*;
+
+content: (Char|LBracket) (Char|LBracket|RBracket|At|Quote|Pipe|Space)*;
 
 Comment: Space* '#' .*? (NewLine | EOF) -> channel(2);
 EmptyLine: NewLine Space+ (NewLine | EOF) -> skip;
@@ -56,9 +60,9 @@ Or: 'Or ';
 Given: 'Given ';
 When: 'When ';
 Then: 'Then ';
-Background: 'Background:';
-Scenario: 'Scenario:';
-Feature: 'Feature:';
+Background: 'Background' COLON;
+Scenario: 'Scenario' COLON;
+Feature: 'Feature' COLON;
 
 Space : [ \t];
 NewLine : '\r\n' | '\n';
@@ -66,4 +70,7 @@ Quote: '"';
 LBracket: '(';
 RBracket: ')';
 At: '@';
+Pipe: '|';
 Char: ~[ \t\r\n()]+?;
+
+fragment COLON: ':';

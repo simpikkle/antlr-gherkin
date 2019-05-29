@@ -26,7 +26,7 @@ public class StepParserTest {
     }
 
     @Test
-    public void stepWithParameters() {
+    public void stepWithDataTable() {
         String featureFile = featureBuilder.append("Then check following fields\n")
                 .append("| param1 | param2 (next) |\n")
                 .append("| param3 | param4 |")

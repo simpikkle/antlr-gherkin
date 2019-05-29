@@ -44,7 +44,7 @@ public class ContextBuilder {
     }
 
     private static TableCell buildCell(GherkinParser.CellContext cellContext) {
-        return new TableCell(buildLocation(cellContext), cellContext.content().getText().trim().trim());
+        return new TableCell(buildLocation(cellContext), cellContext.contentNoPipes().getText().trim().trim());
     }
 
     public static Scenario buildScenario(GherkinParser.ScenarioContext ctx) {
